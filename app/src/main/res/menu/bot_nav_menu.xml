@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/miHome"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_home_24"
+        android:title="Trang chủ"/>
+    <item
+        android:id="@+id/miBookmark"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_bookmark_24"
+        android:title="Lưu trữ"/>
+    <item
+        android:id="@+id/miInvoice"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_list_24"
+        android:title="Hoá đơn"/>
+    <item
+        android:id="@+id/miNotification"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_notifications_24"
+        android:title="Thông báo"/>
+
+    <item
+        android:id="@+id/miAccount"
+        android:enabled="true"
+        android:icon="@drawable/ic_round_person_24"
+        android:title="Tài khoản"/>
+</menu>

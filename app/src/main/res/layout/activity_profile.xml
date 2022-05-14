@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.ProfileActivity">
+
+<LinearLayout
+    android:id="@+id/layoutTopProfile"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:background="@color/main_color_bg"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/layoutImageProfile"
+    >
+
+    <Button
+        android:id="@+id/btnFinishProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00ffffff"
+        android:background="#00ffffff"
+        app:icon="@drawable/ic_baseline_arrow_back_ios_24" />
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/layoutImageProfile"
+        android:layout_width="match_parent"
+        android:layout_height="337dp"
+        android:background="@drawable/ic_bg"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutTopProfile">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="228dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tvNameProfile"
+            android:layout_width="254dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:includeFontPadding="true"
+            android:text="Nguyễn Phúc An"
+            android:textColor="#EEEEEE"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="394dp"
+        android:layout_gravity="bottom"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutImageProfile">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="#E4BCBC"
+            android:text="Địa chỉ"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/txtAddressProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="153/24 Lê Hoàng Phái"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="#E4BCBC"
+            android:text="Giới Tính"
+
+            android:textSize="24dp"
+            android:textStyle="bold" />
+<RadioGroup
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <RadioButton
+        android:id="@+id/rbNam"
+        android:checked="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nam"
+        />
+    <RadioButton
+        android:id="@+id/rbNu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:text="Nữ"
+        />
+
+</RadioGroup>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:background="#E4BCBC"
+            android:text="Số Điện Thoại"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/txtPhoneProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="0928776640"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/btnEditProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/main_color_bg"
+            android:text="Sửa" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

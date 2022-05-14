@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">UIDesign</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng ký</string>
+    <string name="send_code_to_activate">Gửi mã kích hoạt</string>
+    <string name="forget_password">Quên mật khẩu?</string>
+    <string name="name_register">Họ và tên</string>
+    <string name="goto_login">Nếu bạn đã có tài khoản. Nhấn vào đây để đăng nhập</string>
+</resources>
