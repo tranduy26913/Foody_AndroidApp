@@ -13,7 +13,7 @@ public class SaveShop implements Serializable {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -29,11 +29,11 @@ public class SaveShop implements Serializable {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(long idUser) {
         this.idUser = idUser;
     }
     public SaveShop(){}
-    public SaveShop(int id,int idShop,int idUser){
+    public SaveShop(long id,long idShop,long idUser){
         this.id=id;
         this.idShop=idShop;
         this.idUser=idUser;

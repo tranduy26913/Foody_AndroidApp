@@ -1,30 +1,31 @@
 package hcmute.spkt.nguyenphucan19110321.uidesign.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 import hcmute.spkt.nguyenphucan19110321.uidesign.data.Database;
 
 public class Food implements Serializable {
-    protected int id;
+    protected long id;
     protected String name;
     protected String description;
     protected String image;
     protected int price;
-    protected int idShop;
+    protected long idShop;
 
-    public int getIdShop() {
+    public long getIdShop() {
         return idShop;
     }
 
-    public void setIdShop(int idShop) {
+    public void setIdShop(long idShop) {
         this.idShop = idShop;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -60,7 +61,10 @@ public class Food implements Serializable {
         this.price = price;
     }
 
-    public Food(int id, String name, String des, String img, int price,int idShop){
+    public Food(){
+
+    }
+    public Food(long id, String name, String des, String img, int price,long idShop){
         this.id = id;
         this.name = name;
         this.description = des;
@@ -69,24 +73,15 @@ public class Food implements Serializable {
         this.idShop=idShop;
     }
 
-    public void InsertToDatabase(Database db){
-        String[] params = new String[5] ;
-        params[0]=this.name;
-        params[1]=this.description;
-        params[2]=this.image;
-        params[3]=String.valueOf(this.price);
-        params[4]=String.valueOf(this.idShop);
-        db.ExecQuery("insert into Foods values(null,?,?,?,?,?)",params);
-    }
-
-    public String[] toParams(){
-        String[] params = new String[5] ;
-        params[0]=this.name;
-        params[1]=this.description;
-        params[2]=this.image;
-        params[3]=String.valueOf(this.price);
-        params[4]=String.valueOf(this.idShop);
-        return params;
+    public HashMap<String,Object> toHashMap(){
+        HashMap<String,Object> entity = new HashMap<>();
+        entity.put("id",this.id);
+        entity.put("name",this.name);
+        entity.put("description",this.description);
+        entity.put("image",this.image);
+        entity.put("price",this.price);
+        entity.put("idShop",this.idShop);
+        return entity;
     }
 
 }

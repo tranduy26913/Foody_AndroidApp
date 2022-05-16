@@ -30,7 +30,6 @@ import hcmute.spkt.nguyenphucan19110321.uidesign.model.User;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Database database;
     private EditText txtEmailLogin,txtPasswordLogin;
     private Button btnLogin;
     private FirebaseAuth mAuth;
@@ -41,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        database = new Database(this,"Foody.sqlite",null,1);
         SetControl();
         SetEvent();
         LoadDataFromSharePref();

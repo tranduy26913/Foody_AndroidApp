@@ -1,5 +1,6 @@
 package hcmute.spkt.nguyenphucan19110321.uidesign.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 
@@ -44,6 +50,8 @@ public class ShopDetailActivity extends AppCompatActivity {
     private ImageView imgShopDetail;
     private Button btnSaveShop,btnCart;
     Database database;
+    private FirebaseFirestore db;
+    private List<Food> foodList;
 
 
     @Override
@@ -51,6 +59,7 @@ public class ShopDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_detail);
         database = new Database(this,"Foody.sqlite",null,1);
+        db = FirebaseFirestore.getInstance();
         SetControl();
         LoadDataFromIntent();
         LoadListFood();
@@ -68,16 +77,25 @@ public class ShopDetailActivity extends AppCompatActivity {
                 GLOBAL.ORDER = new Order(1,GLOBAL.USER.getId(),shop.getName(),new Date(),0,0);
                 GLOBAL.ORDERDETAILS = new ArrayList<>();
                 SaveShopDAO saveShopDAO = new SaveShopDAO(database);
-                boolean saved = saveShopDAO.existSaved(shop.getId(),GLOBAL.USER.getId());
-                if(saved){
-                    Drawable img = this.getDrawable(R.drawable.ic_baseline_bookmark_24);
-                    img.setBounds(0, 0, 60, 60);
-                    btnSaveShop.setCompoundDrawables(img, null, null, null);
-                    btnSaveShop.setTag(true);
-                }
-                else{
-                    btnSaveShop.setTag(false);
-                }
+                db.collection(GLOBAL.SAVED_COLLECTION)
+                        .whereEqualTo("idShop",shop.getId())
+                        .whereEqualTo("idUser",GLOBAL.USER.getId())
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            if(task.getResult().getDocuments().size()!=0){
+                                Drawable img = getApplicationContext().getDrawable(R.drawable.ic_baseline_bookmark_24);
+                                img.setBounds(0, 0, 60, 60);
+                                btnSaveShop.setCompoundDrawables(img, null, null, null);
+                                btnSaveShop.setTag(true);
+                            }
+                            else{
+                                btnSaveShop.setTag(false);
+                            }
+                        }
+                    }
+                });
             }
         }
     }
@@ -89,8 +107,20 @@ public class ShopDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(GLOBAL.USER!=null){
                     if((boolean) btnSaveShop.getTag()){
-                        database.ExecQuery("delete from Saveds where idShop="+String.valueOf(shop.getId())+" and" +
-                                " idUser="+String.valueOf(GLOBAL.USER.getId()));
+                        db.collection(GLOBAL.SAVED_COLLECTION)//Xử lý thêm save vào firebase
+                                .whereEqualTo("idShop",shop.getId())
+                                .whereEqualTo("idUser",GLOBAL.USER.getId())
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if(task.isSuccessful()){
+                                            for (QueryDocumentSnapshot doc:task.getResult()){
+                                                db.collection(GLOBAL.SAVED_COLLECTION).document(doc.getId()).delete();
+                                            }
+                                        }
+                                    }
+                                });
                         Drawable img = getApplication().getDrawable(R.drawable.ic_baseline_bookmark_border_24);
                         img.setBounds(0, 0, 60, 60);
                         btnSaveShop.setCompoundDrawables(img, null, null, null);
@@ -99,8 +129,10 @@ public class ShopDetailActivity extends AppCompatActivity {
                         notify.InsertToDatabase(database);
                     }
                     else {
-                        SaveShop saveShop = new SaveShop(shop.getId(),GLOBAL.USER.getId());
-                        saveShop.InsertToDatabase(database);
+                        SaveShop saveShop = new SaveShop(new Date().getTime(),shop.getId(),GLOBAL.USER.getId());
+                        db.collection(GLOBAL.SAVED_COLLECTION)
+                                .document(String.valueOf(saveShop.getId()))
+                                .set(saveShop);
                         Drawable img = getApplication().getDrawable(R.drawable.ic_baseline_bookmark_24);
                         img.setBounds(0, 0, 60, 60);
                         btnSaveShop.setCompoundDrawables(img, null, null, null);
@@ -143,7 +175,8 @@ public class ShopDetailActivity extends AppCompatActivity {
     }
 
     private void LoadListFood(){
-        FoodAdapter foodAdapter =new FoodAdapter(this, shop.GetFoodInShop(database), new IAddToCartListener() {
+        foodList = new ArrayList<>();
+        FoodAdapter foodAdapter =new FoodAdapter(this, foodList, new IAddToCartListener() {
             @Override
             public void AddToCart(Food food) {
                 if(GLOBAL.USER != null){
@@ -177,6 +210,21 @@ public class ShopDetailActivity extends AppCompatActivity {
         LinearLayoutManager linear =new LinearLayoutManager(this);
         recycleViewFoodMost.setAdapter(foodAdapter);
         recycleViewFoodMost.setLayoutManager(linear);
+
+        db.collection(GLOBAL.FOOD_COLLECTION)//Load dữ liệu từ firebase
+                .whereEqualTo("idShop",shop.getId())//điều kiện
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                foodList.add(document.toObject(Food.class));
+                            }
+                            foodAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
     }
 
     @Override

@@ -14,6 +14,8 @@ public class GLOBAL {
     public static final String DATABASE_NAME = "Foody.sqlite";
     public static final String USER_COLLECTION = "USER";
     public static final String SHOP_COLLECTION = "SHOP";
+    public static final String FOOD_COLLECTION = "FOOD";
+    public static final String SAVED_COLLECTION = "SAVED";
 
     public static String formatString(String price){
         String result ;

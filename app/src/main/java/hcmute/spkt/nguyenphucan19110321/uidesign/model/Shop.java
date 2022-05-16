@@ -4,12 +4,13 @@ import android.database.Cursor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import hcmute.spkt.nguyenphucan19110321.uidesign.data.Database;
 
 public class Shop implements Serializable {
-    protected int id;
+    protected long id;
     protected String name;
     protected String description;
     protected String image;
@@ -19,11 +20,11 @@ public class Shop implements Serializable {
     protected double rate;
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -86,14 +87,14 @@ public class Shop implements Serializable {
     public Shop() {
     }
 
-    public Shop(int id, String name, String description, String image) {
+    public Shop(long id, String name, String description, String image) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
     }
 
-    public Shop(int id, String name, String description, String image, String imageSearch, String address, String type, double rate) {
+    public Shop(long id, String name, String description, String image, String imageSearch, String address, String type, double rate) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -127,6 +128,19 @@ public class Shop implements Serializable {
         params[5]=this.type;
         params[6]=String.valueOf(this.rate);
         return params;
+    }
+
+    public HashMap<String,Object> toHashMap(){
+        HashMap<String,Object> entity = new HashMap<>();
+        entity.put("id",this.id);
+        entity.put("name",this.name);
+        entity.put("description",this.description);
+        entity.put("image",this.image);
+        entity.put("imageSearch",this.imageSearch);
+        entity.put("address",this.address);
+        entity.put("type",this.type);
+        entity.put("rate",this.rate);
+        return entity;
     }
 
     public List<Food> GetFoodInShop(Database db){

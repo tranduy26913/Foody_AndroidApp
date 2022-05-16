@@ -15,7 +15,7 @@ public class Notify {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(long idUser) {
         this.idUser = idUser;
     }
 
@@ -23,7 +23,7 @@ public class Notify {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -60,7 +60,7 @@ public class Notify {
         this.title=title;
     }
     public Notify(long idUser, String title,String description,Date time){
-        this.id=id;
+        this.id=new Date().getTime();
         this.idUser=idUser;
         this.description=description;
         this.time=time;

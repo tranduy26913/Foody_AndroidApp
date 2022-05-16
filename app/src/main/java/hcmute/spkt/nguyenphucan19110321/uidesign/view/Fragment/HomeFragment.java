@@ -12,12 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hcmute.spkt.nguyenphucan19110321.uidesign.R;
 import hcmute.spkt.nguyenphucan19110321.uidesign.data.DatabaseFactory;
+import hcmute.spkt.nguyenphucan19110321.uidesign.data.GLOBAL;
 import hcmute.spkt.nguyenphucan19110321.uidesign.view.ShopDetailActivity;
 import hcmute.spkt.nguyenphucan19110321.uidesign.adapter.ShopHomeAdapter;
 import hcmute.spkt.nguyenphucan19110321.uidesign.data.Database;
@@ -28,8 +35,9 @@ import hcmute.spkt.nguyenphucan19110321.uidesign.model.Shop;
 public class HomeFragment extends Fragment {
 
     private GridView gridViewFoodHome;
-    private Database database;
     private List<Shop> shopList;
+    private FirebaseFirestore db;
+    private ShopHomeAdapter shopHomeAdapter;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -51,16 +59,29 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        db=FirebaseFirestore.getInstance();
         gridViewFoodHome = view.findViewById(R.id.gridViewFoodHome);
-        database= new Database(this.getContext(),"Foody.sqlite",null,1);
-        shopList = DatabaseFactory.getListShop(database);
-        ShopHomeAdapter shopHomeAdapter = new ShopHomeAdapter(this.getContext(), shopList, new IClickItemShopHomeListener() {
+        shopList = new ArrayList<>();
+        shopHomeAdapter = new ShopHomeAdapter(this.getContext(), shopList, new IClickItemShopHomeListener() {
             @Override
             public void onClickItemShopHome(Shop shop) {
                 GoToShopDetail(shop);
             }
-
         });
+        db.collection(GLOBAL.SHOP_COLLECTION)//xử lý lấy dữ liệu từ firebase
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                shopList.add(document.toObject(Shop.class));
+                            }
+                            shopHomeAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+
         gridViewFoodHome.setAdapter(shopHomeAdapter);
 
     }
